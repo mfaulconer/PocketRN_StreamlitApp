@@ -23,84 +23,43 @@ sizes = [
 
 fig1, ax1 = plt.subplots()
 ax1.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
+colors = ['#2ecc71', '#e74c3c']
+ax1.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90, colors=colors)
 ax1.axis('equal')
 
 st.pyplot(fig1)
 
-# # filter data
-# position_df = df[df['POS'] == selected_position]
+## table of patients not seen in March
+# Show just first name, last name, and MBI for patients not seen in March
+st.subheader('Patients Not Seen in March')
+not_seen_df = df[df['Patient_Seen'] == "No"]
+not_seen_df = not_seen_df[['First_Name', 'Last_Name', 'MBI']]
+page_size = 10
+page_number = st.number_input("Page", min_value=1, step=1)
+start = (page_number - 1) * page_size
+end = start + page_size
+st.dataframe(not_seen_df.iloc[start:end])
 
-# ## plots
-# if not selected_tests:
-#     st.warning("Please select at least one test result to display.")
-# else:
-#     for test in selected_tests:
-#         st.subheader(f'Histogram for {test}')
-#         fig, ax = plt.subplots()
-#         sns.histplot(data=position_df, x=test, bins = 10, kde=True, ax=ax)
-#         ax.set_title(f"{test} Distribution ({selected_position})")
-#         ax.set_xlabel(test)
-#         ax.set_ylabel("Frequency")
+## table of patients seen in March
+# Show first name, last name, MBI, date last seen, and appt type
+st.subheader('Patients Seen in March')
+seen_df = df[df['Patient_Seen'] == "Yes"]
+seen_df = seen_df[['First_Name', 'Last_Name', 'MBI', 'Date_Seen', 'Appt_Type']]
+page_size = 10
+page_number = st.number_input("Page", min_value=1, step=1)
+start = (page_number - 1) * page_size
+end = start + page_size
+st.dataframe(seen_df.iloc[start:end])
 
-#         st.pyplot(fig)
+## bar chart of appointment types for patients seen in March
+st.subheader('Appointment Types for Patients Seen in March')
+appt_counts = seen_df['Appt_Type'].value_counts().reset_index()
+appt_counts.columns = ['Appt_Type', 'Count']
+fig2 = px.bar(appt_counts, x='Appt_Type', y='Count', color='Appt_Type', title='Appointment Types for Patients Seen in March')
+st.plotly_chart(fig2)
 
-# ## results by teams
-# with tab2:
-#     st.write('Team Draft Pick Performances')
-
-#     st.markdown("""
-#     ## Instructions
-#     - Enter a **team name** in the input box below (must include city).
-#     - Select the **years** (2021-2024) using the checkboxes.
-#     - The table below will display the player data for the selected team and years.
-#     - For more all team options, click [here](https://www.espn.com/nba/teams).
-# """)
-
-#     # select teams
-#     team_name = st.text_input("Enter Team Name:")
-#     df['Year'] = df['Year'].astype(str)
-
-
-#     # year options
-#     year_2021 = st.checkbox("2021", value=True)
-#     year_2022 = st.checkbox("2022", value=True)
-#     year_2023 = st.checkbox("2023", value=True)
-#     year_2024 = st.checkbox("2024", value=True)
-
-#     # filter data
-#     selected_years = []
-#     if year_2021:
-#         selected_years.append('2021')
-#     if year_2022:
-#         selected_years.append('2022')
-#     if year_2023:
-#         selected_years.append('2023')
-#     if year_2024:
-#         selected_years.append('2024')
-
-#     if team_name:
-#         team_df = df[df['Team'].str.contains(team_name, case = False, na= False)]
-#         if selected_years:
-#             team_df = team_df[team_df['Year'].isin(selected_years)]
-
-#         # specify what I want to show
-#         columns_to_show = ['Player', 'POS', 'Lane Agility Time (seconds)', 'Shuttle Run (seconds)', 'Three Quarter Sprint (seconds)', 'Standing Vertical Leap (inches)', 'Max Vertical Leap (inches)', 'Year', 'Affiliation', 'OverallPick']
-#         team_df = team_df[columns_to_show]
-
-#         # build table
-#         if not team_df.empty:
-#             summary = team_df[['Lane Agility Time (seconds)', 'Shuttle Run (seconds)', 'Three Quarter Sprint (seconds)', 'Standing Vertical Leap (inches)', 'Max Vertical Leap (inches)']].mean()
-#             summary_row = pd.DataFrame({
-#                 'Test Name': ['Lane Agility Time (seconds)', 'Shuttle Run (seconds)', 'Three Quarter Sprint (seconds)', 
-#                             'Standing Vertical Leap (inches)', 'Max Vertical Leap (inches)'],
-#                 'Average Value': summary.values
-#             })
-#             summary_row = summary_row.reset_index(drop=True)
-#             st.subheader(f'Drafted Player Data for {team_name}')
-#             st.dataframe(team_df)
-#             st.subheader(f'Drafted Player Averages')
-#             st.table(summary_row)
-#         else:
-#             st.warning(f"No data availiable for {team_name} in selected years.")
-#     else:
-#         st.warning("Please enter a team name.")
+## list of patients whose appt type was "No Show"
+st.subheader('Patients with "No Show" Appointment Type')
+no_show_df = seen_df[seen_df['Appt_Type'] == "No Show"]
+no_show_df = no_show_df[['First_Name', 'Last_Name', 'MBI', 'Date_Seen']]
+st.dataframe(no_show_df)
