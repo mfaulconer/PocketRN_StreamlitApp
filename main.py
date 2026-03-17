@@ -26,33 +26,23 @@ colors = ['#2ecc71', '#e74c3c']
 ax1.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90, colors=colors)
 ax1.axis('equal')
 
+annotation_text = "\n".join([f"{label}: {size}" for label, size in zip(labels, sizes)])
+
+ax1.text(
+    0.5, -0.1,
+    annotation_text,
+    ha='center',
+    va='top',
+    transform=ax1.transAxes
+)
+
 st.pyplot(fig1)
 
-## table of patients not seen in March
-# Show just first name, last name, and MBI for patients not seen in March
-st.subheader('Patients Not Seen in March')
-not_seen_df = df[df['Patient_Seen'] == "No"]
-not_seen_df = not_seen_df[['First_Name', 'Last_Name', 'MBI']]
-page_size = 10
-page_number = st.number_input("Page", min_value=1, step=1)
-start = (page_number - 1) * page_size
-end = start + page_size
-st.dataframe(not_seen_df.iloc[start:end])
-
-## table of patients seen in March
-# Show first name, last name, MBI, date last seen, and appt type
-st.subheader('Patients Seen in March')
-seen_df = df[df['Patient_Seen'] == "Yes"]
-seen_df = seen_df[['First_Name', 'Last_Name', 'MBI', 'Date_Seen', 'Appt_Type']]
-page_size = 10
-page_number = st.number_input("Page", min_value=1, step=1, key="seen_page")
-start = (page_number - 1) * page_size
-end = start + page_size
-st.dataframe(seen_df.iloc[start:end])
-
 ## bar chart of appointment types for patients seen in March
+seen_march_df = df[df['Patient_Seen'] == "Yes"]
+
 st.subheader('Appointment Types for Patients Seen in March')
-appt_counts = seen_df['Appt_Type'].value_counts().reset_index()
+appt_counts = seen_march_df['Appt_Type'].value_counts().reset_index()
 appt_counts.columns = ['Appt_Type', 'Count']
 fig2 = px.bar(appt_counts, x='Appt_Type', y='Count', color='Appt_Type', title='Appointment Types for Patients Seen in March')
 st.plotly_chart(fig2)
