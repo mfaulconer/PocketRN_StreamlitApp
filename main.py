@@ -59,7 +59,7 @@ with col2:
             Appointments to Schedule Per Work Day to Meet 100% of Patients Seen in March
         </h3>
         <p style="margin:0;">
-        As of {today.strftime('%d-%m-%Y')}, to meet 100% of patients seen in March,
+        As of {today.strftime('%m-%d-%Y')}, to meet 100% of patients seen in March,
         you would need to schedule approximately <b>{appts_to_schedule:.2f}</b> appointments per work day.
         </p>
     </div>
