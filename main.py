@@ -22,7 +22,7 @@ sizes = [
 ]
 
 fig1, ax1 = plt.subplots()
-ax1.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
+ax1.pie(sizes, labels=labels, counts =True, autopct='%1.1f%%', startangle=90)
 colors = ['#2ecc71', '#e74c3c']
 ax1.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90, colors=colors)
 ax1.axis('equal')
@@ -58,8 +58,8 @@ appt_counts.columns = ['Appt_Type', 'Count']
 fig2 = px.bar(appt_counts, x='Appt_Type', y='Count', color='Appt_Type', title='Appointment Types for Patients Seen in March')
 st.plotly_chart(fig2)
 
-## list of patients whose appt type was "No Show"
+## list of patients whose appt type was "No Show" from whole dataset
 st.subheader('Patients with "No Show" Appointment Type')
-no_show_df = seen_df[seen_df['Appt_Type'] == "No Show"]
+no_show_df = df[df['Appt_Type'] == "No Show"]
 no_show_df = no_show_df[['First_Name', 'Last_Name', 'MBI', 'Date_Seen']]
 st.dataframe(no_show_df)
