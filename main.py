@@ -46,7 +46,7 @@ st.subheader('Patients Seen in March')
 seen_df = df[df['Patient_Seen'] == "Yes"]
 seen_df = seen_df[['First_Name', 'Last_Name', 'MBI', 'Date_Seen', 'Appt_Type']]
 page_size = 10
-page_number = st.number_input("Page", min_value=1, step=1)
+page_number = st.number_input("Page", min_value=1, step=1, key="seen_page")
 start = (page_number - 1) * page_size
 end = start + page_size
 st.dataframe(seen_df.iloc[start:end])
