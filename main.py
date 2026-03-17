@@ -43,8 +43,10 @@ with col1:
     st.pyplot(fig1)
 
 ## Box that says appts to schedule per work day to meet 100% of patients seen in March, dynamic to todays date
-##
 with col2:
+    st.markdown("""
+    <div style='border: 2px solid #3498db; border-radius: 10px; padding: 20px; background-color: #ecf0f1;'>
+    """, unsafe_allow_html=True)
     st.subheader('Appointments to Schedule Per Work Day to Meet 100% of Patients Seen in March')
     total_patients_seen = (df['Patient_Seen'] == "Yes").sum()
     patients_not_seen = (df['Patient_Seen'] == "No").sum()
