@@ -54,15 +54,16 @@ with col1:
 
 with col2:
     st.markdown(f"""
-    <div style='border: 2px solid #3498db; border-radius: 10px; padding: 20px; background-color: #ecf0f1;'>
-        <h3>Appointments to Schedule Per Work Day to Meet 100% of Patients Seen in March</h3>
-        <p>
+    <div style='border: 2px solid #3498db; border-radius: 10px; padding: 20px; background-color: #f5f5f5;'>
+        <h3 style="font-size:14px; margin-bottom:8px;">
+            Appointments to Schedule Per Work Day to Meet 100% of Patients Seen in March
+        </h3>
+        <p style="margin:0;">
         As of {today.strftime('%Y-%m-%d')}, to meet 100% of patients seen in March,
         you would need to schedule approximately <b>{appts_to_schedule:.2f}</b> appointments per work day.
         </p>
     </div>
     """, unsafe_allow_html=True)
-
 
 ## list of patients whose appt type was "No Show" from whole dataset
 st.subheader('Patients with "No Show" Appointment Type')
