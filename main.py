@@ -57,7 +57,7 @@ with col2:
     work_days_remaining = len(pd.bdate_range(start=today, end=march_end)) - weekends_remaining
     appts_to_schedule = patients_not_seen / work_days_remaining if work_days_remaining > 0 else 0
     st.write(f"As of {today.strftime('%Y-%m-%d')}, to meet 100% of patients seen in March, you would need to schedule approximately {appts_to_schedule:.2f} appointments per work day.")
-
+    st.markdown("</div>", unsafe_allow_html=True)
 
 ## list of patients whose appt type was "No Show" from whole dataset
 st.subheader('Patients with "No Show" Appointment Type')
