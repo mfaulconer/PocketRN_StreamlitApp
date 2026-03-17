@@ -43,11 +43,6 @@ with col1:
     st.pyplot(fig1)
 
 ## Box that says appts to schedule per work day to meet 100% of patients seen in March, dynamic to todays date
-with col2:
-    st.markdown("""
-    <div style='border: 2px solid #3498db; border-radius: 10px; padding: 20px; background-color: #ecf0f1;'>
-    """, unsafe_allow_html=True)
-    st.subheader('Appointments to Schedule Per Work Day to Meet 100% of Patients Seen in March')
     total_patients_seen = (df['Patient_Seen'] == "Yes").sum()
     patients_not_seen = (df['Patient_Seen'] == "No").sum()
     today = pd.to_datetime('today')
@@ -56,8 +51,18 @@ with col2:
     weekends_remaining = len(pd.bdate_range(start=today, end=march_end, freq='W-SAT')) + len(pd.bdate_range(start=today, end=march_end, freq='W-SUN'))
     work_days_remaining = len(pd.bdate_range(start=today, end=march_end)) - weekends_remaining
     appts_to_schedule = patients_not_seen / work_days_remaining if work_days_remaining > 0 else 0
-    st.write(f"As of {today.strftime('%Y-%m-%d')}, to meet 100% of patients seen in March, you would need to schedule approximately {appts_to_schedule:.2f} appointments per work day.")
-    st.markdown("</div>", unsafe_allow_html=True)
+
+with col2:
+    st.markdown(f"""
+    <div style='border: 2px solid #3498db; border-radius: 10px; padding: 20px; background-color: #ecf0f1;'>
+        <h3>Appointments to Schedule Per Work Day to Meet 100% of Patients Seen in March</h3>
+        <p>
+        As of {today.strftime('%Y-%m-%d')}, to meet 100% of patients seen in March,
+        you would need to schedule approximately <b>{appts_to_schedule:.2f}</b> appointments per work day.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
 
 ## list of patients whose appt type was "No Show" from whole dataset
 st.subheader('Patients with "No Show" Appointment Type')
