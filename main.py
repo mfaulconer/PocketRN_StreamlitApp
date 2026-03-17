@@ -22,7 +22,6 @@ sizes = [
 ]
 
 fig1, ax1 = plt.subplots()
-ax1.pie(sizes, labels=labels, counts =True, autopct='%1.1f%%', startangle=90)
 colors = ['#2ecc71', '#e74c3c']
 ax1.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90, colors=colors)
 ax1.axis('equal')
