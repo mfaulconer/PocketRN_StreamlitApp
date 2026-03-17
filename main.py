@@ -38,6 +38,18 @@ ax1.text(
 
 st.pyplot(fig1)
 
+## Box that says appts to schedule per work day to meet 100% of patients seen in March, dynamic to todays date
+st.subheader('Appointments to Schedule Per Work Day to Meet 100% of Patients Seen in March')
+total_patients_seen = (df['Patient_Seen'] == "Yes").sum()
+patients_not_seen = (df['Patient_Seen'] == "No").sum()
+today = pd.to_datetime('today')
+march_start = pd.to_datetime('2026-03-01')
+march_end = pd.to_datetime('2026-03-31')
+weekends_remaining = len(pd.bdate_range(start=today, end=march_end, freq='W-SAT')) + len(pd.bdate_range(start=today, end=march_end, freq='W-SUN'))
+work_days_remaining = len(pd.bdate_range(start=today, end=march_end)) - weekends_remaining
+appts_to_schedule = patients_not_seen / work_days_remaining if work_days_remaining > 0 else 0
+st.write(f"To meet 100% of patients seen in March, you would need to schedule approximately {appts_to_schedule:.2f} appointments per work day.")
+
 ## bar chart of appointment types for patients seen in March
 seen_march_df = df[df['Patient_Seen'] == "Yes"]
 
